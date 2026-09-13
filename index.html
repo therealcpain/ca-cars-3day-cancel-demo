@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CA CARS 3-Day Cancel Clock — used-car cancel window / Oct 1 2026</title>
+  <meta name="description" content="Paste California dealer used-vehicle? yes/no, contract price ≤ $50,000? yes/no, contract date or pre–Oct 1, and view date. One shareable card: not yet in force / days until Oct 1 / inside 3-day cancel window / past window / not eligible. Cite Civ. Code §1784.43. Not legal advice. Not lemon-law.">
+  <meta name="theme-color" content="#0b0f14">
+  <meta property="og:title" content="CA CARS 3-Day Cancel Clock">
+  <meta property="og:description" content="Paste your contract date — still inside California’s 3-day used-car cancel window? Cite Civ. Code §1784.43. Not legal advice.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <header class="site">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">3d</div>
+        <div>
+          <h1>CA CARS 3-Day Cancel Clock</h1>
+          <p class="tagline">Paste CA dealer used + ≤$50k + contract date → days left / not in force / not eligible · share card.</p>
+        </div>
+      </div>
+      <span class="badge">Not legal advice</span>
+    </header>
+
+    <aside class="myth-banner" role="note">
+      <strong>Disclaimer.</strong>
+      This card is <em>calendar literacy</em> —
+      <strong>not</strong> legal advice, <strong>not</strong> a lemon-law claim tool, <strong>not</strong> a dealer-login scrape, and <strong>not</strong> a determination that you may cancel.
+      <strong>Return during business hours.</strong> California used vehicles ≤$50k only. New vehicles have <strong>no</strong> cooling-off per the statute notice.
+      We never invent THIS buyer’s restocking $. Confirm the dealer’s open day if day 3 falls on a closed dealership day — we do not invent hours.
+      Public framing: Civil Code <strong>§1784.43</strong> (operative <strong>Oct&nbsp;1&nbsp;2026</strong> via SB&nbsp;766) — three-day right to cancel for specified used dealer retail ≤$50k; right does not apply if driven <strong>&gt;400 miles</strong>; dealer may charge a restocking fee.
+      Read the dealer’s required <strong>3-Day Right to Cancel</strong> disclosure.
+      Sources:
+      <a href="https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=CIV&amp;sectionNum=1784.43." target="_blank" rel="noopener noreferrer">Civ. Code §1784.43 (leginfo)</a>
+      ·
+      <a href="https://www.carpro.com/blog/california-cars-act-coming-soon-will-other-states-follow" target="_blank" rel="noopener noreferrer">CarPro Aug 11 2026</a>
+      ·
+      <a href="https://library.nclc.org/article/new-consumer-law-changes-taking-effect-2026" target="_blank" rel="noopener noreferrer">NCLC 2026 consumer law changes (SB 766)</a>.
+    </aside>
+
+    <section class="panel lookup" aria-labelledby="lookup-heading">
+      <h2 id="lookup-heading">1. Paste your deal flags</h2>
+      <p class="hint">
+        User paste only — <strong>no</strong> VIN lookup, <strong>no</strong> DMS / dealer scrape.
+        Empty or missing dates → honest miss (we will not invent a cancel window).
+        Optional miles chip affects eligibility literacy only.
+      </p>
+
+      <div class="field-grid four">
+        <div>
+          <label for="caDealerUsed">California dealer used-vehicle purchase/lease?</label>
+          <select id="caDealerUsed">
+            <option value="">— select —</option>
+            <option value="yes">Yes — CA dealer used</option>
+            <option value="no">No — new / private party / out of scope</option>
+          </select>
+        </div>
+        <div>
+          <label for="priceOk">Contract price ≤ $50,000?</label>
+          <select id="priceOk">
+            <option value="">— select —</option>
+            <option value="yes">Yes — ≤ $50,000</option>
+            <option value="no">No — over $50,000</option>
+          </select>
+        </div>
+        <div>
+          <label for="purchaseMode">Purchase framing</label>
+          <select id="purchaseMode">
+            <option value="pre">Not yet purchased / pre–Oct 1</option>
+            <option value="date">Contract execution date</option>
+          </select>
+        </div>
+        <div id="contractDateWrap">
+          <label for="contractDate">Contract execution date</label>
+          <input id="contractDate" type="date" />
+        </div>
+      </div>
+
+      <div class="field-grid four">
+        <div>
+          <label for="viewDate">View date (when you’re looking)</label>
+          <input id="viewDate" type="date" required />
+        </div>
+        <div>
+          <label for="milesOver400">Miles driven &gt;400? (optional)</label>
+          <select id="milesOver400">
+            <option value="unsure">Unsure</option>
+            <option value="no">No — ≤400 miles</option>
+            <option value="yes">Yes — over 400 miles</option>
+          </select>
+        </div>
+        <div>
+          <label for="noteLabel">Note label (optional)</label>
+          <input id="noteLabel" type="text" maxlength="64" placeholder="e.g. Redacted · family chat" autocomplete="off" />
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-primary" id="cardBtn">Show cancel clock</button>
+        <button type="button" class="btn" id="clearBtn">Clear</button>
+      </div>
+      <p class="status" id="status" aria-live="polite"></p>
+
+      <h3 class="subhead">Seed examples (teaching dates)</h3>
+      <div class="seed-chips" id="seedChips" role="list" aria-label="Seed CA CARS 3-day cancel examples"></div>
+    </section>
+
+    <section class="panel card-panel" aria-labelledby="card-heading" id="cardSection" hidden>
+      <div class="card-toolbar">
+        <h2 id="card-heading">2. Shareable cancel clock</h2>
+        <div class="actions">
+          <button type="button" class="btn" id="copySummary">Copy summary</button>
+          <button type="button" class="btn" id="shareBtn">Share link</button>
+          <button type="button" class="btn" id="pngBtn">Export PNG</button>
+        </div>
+      </div>
+
+      <!-- PRIMARY VISUAL: countdown / status card — giant text-primary status -->
+      <article class="renewal-card" id="deadlineCard" aria-labelledby="dlHeadline">
+        <header class="card-head">
+          <div>
+            <p class="brand-line">CA CARS 3-Day Cancel Clock</p>
+            <p class="meta-line" id="cardMeta">—</p>
+            <h3 id="dlHeadline">Still inside the 3-day cancel window?</h3>
+          </div>
+          <div class="verdict" id="statusBadge">
+            <span class="verdict-k" id="statusPill">—</span>
+            <span class="verdict-s" id="statusSub">Text-labeled · not color-only</span>
+          </div>
+        </header>
+
+        <div class="hero-row">
+          <div class="hero-stat cy-lead">
+            <span class="hero-kicker">Your cancel clock</span>
+            <div class="face-allin-line" aria-label="Status badge">
+              <span class="face-was"><span class="face-was-k">View date</span> <span id="viewDateDisp">—</span></span>
+              <span class="face-arrow" aria-hidden="true">→</span>
+              <span class="hero-value" id="daysDisp">—</span>
+            </div>
+            <span class="hero-sub" id="deadlineLine">3 calendar days · day after contract</span>
+          </div>
+          <div class="hero-stat fee ring-stat">
+            <span class="hero-kicker">Status badge</span>
+            <div class="ring-wrap" aria-hidden="true">
+              <div class="fee-ring" id="daysRing" style="--pct:0"></div>
+              <div class="ring-center">
+                <span class="hero-value" id="daysRingDisp">—</span>
+              </div>
+            </div>
+            <span class="hero-sub" id="windowLine">—</span>
+          </div>
+        </div>
+
+        <p class="look-enroll-flag" id="actionFlag" aria-live="polite">—</p>
+
+        <p class="look-enroll-flag" id="windowChipStrip" aria-live="polite">
+          3 calendar days starting the day after contract; if day 3 is a closed dealership day → next open day (confirm open day).
+        </p>
+
+        <p class="look-enroll-flag warn" id="restockStrip" aria-live="polite">
+          ≤400 miles / restocking fee literacy (1.5%, $200 min / $600 max + up to $150 mileage over 250 per CarPro) — never invent THIS buyer’s restocking $.
+        </p>
+
+        <p class="look-enroll-flag" id="milesStrip" aria-live="polite">—</p>
+
+        <div class="receipt-strip four" id="receiptStrip" aria-label="Status breakdown">
+          <div class="r-item"><span class="r-k">Dealer used?</span><span class="r-v" id="rDealer">—</span></div>
+          <div class="r-item"><span class="r-k">Price band</span><span class="r-v" id="rPrice">—</span></div>
+          <div class="r-item"><span class="r-k">Cancel window</span><span class="r-v" id="rWindow">—</span></div>
+          <div class="r-item"><span class="r-k">View date</span><span class="r-v" id="rView">—</span></div>
+        </div>
+
+        <p class="decoder-line" id="decoderLine">—</p>
+        <p class="action-line" id="actionLine">—</p>
+        <p class="cite-line" id="citeLine">—</p>
+
+        <footer class="card-foot">
+          <span>User-pasted dates · no VIN/DMS scrape</span>
+          <span>Not legal advice · not lemon-law · never invent restocking $</span>
+        </footer>
+      </article>
+
+      <div class="share-box" id="shareBox" hidden>
+        <label for="shareUrl">Share URL (hash restores your pasted fields)</label>
+        <div class="row">
+          <input id="shareUrl" type="text" readonly />
+          <button type="button" class="btn" id="copyShare" style="flex:0 0 auto">Copy</button>
+        </div>
+        <p class="hint">Append UTM when you post, e.g. <code>?utm_source=reddit&amp;utm_medium=organic&amp;utm_campaign=ca_cars_3day_cancel_mvp</code></p>
+      </div>
+
+      <div class="source-links" id="sourceLinks"></div>
+    </section>
+
+    <section class="panel legend" aria-labelledby="legend-heading">
+      <h2 id="legend-heading">How to read the card</h2>
+      <ul class="legend-list">
+        <li><span class="pill allin">Giant status</span> Text-primary (not color-only): <strong>not yet in force</strong> / days until Oct&nbsp;1 / <strong>inside 3-day cancel window</strong> / <strong>past window</strong> / <strong>not eligible</strong> (new / &gt;$50k / private party / &gt;400 miles).</li>
+        <li><span class="pill fee">3-day chip</span> Restates <strong>your</strong> window dates (or days until Oct&nbsp;1 when pre-force) from the pasted view/contract dates — not a static slogan. Three calendar days <strong>starting the day after</strong> contract. If day 3 is a closed dealership day → next open day (confirm hours; we do not invent them).</li>
+        <li><span class="pill claim">≤400 / restocking</span> Right does not apply if driven &gt;400 miles. Restocking literacy: 1.5% ($200 min / $600 max) + up to $150 mileage over 250 (CarPro) — <strong>never invent THIS buyer’s restocking $</strong>.</li>
+        <li><strong>Oct 1 2026</strong> Operative countdown when pre-force / not-yet-purchased framing.</li>
+        <li><strong>Pointers</strong> Civ. Code §1784.43 (leginfo) + dealer’s required 3-Day Right to Cancel disclosure. Not lemon-law. New vehicles have no cooling-off per statute notice.</li>
+        <li><strong>No invented $.</strong> Empty/missing dates = honest miss. No VIN/DMS scrape.</li>
+      </ul>
+    </section>
+
+    <div class="ad-slot" aria-hidden="true">
+      <span class="ad-label">Ad slot (placeholder — AdSense later)</span>
+      <p>Inventory under the clock card + “what is California’s 3-day used-car cancel right?” explainer · brand-safe display only · never inside PNG · not legal advice · hard-avoid lemon-law / we-buy-cars / refinance lead-gen</p>
+    </div>
+
+    <footer>
+      <strong>CA CARS 3-Day Cancel Clock</strong> — contract-date-honest share card for California’s SB 766 / §1784.43 used-vehicle cancel right.
+      <ul>
+        <li>CA dealer used? · ≤$50k? · contract date or pre–Oct 1 · view date → status card</li>
+        <li>User paste only · zero scrape · not legal advice · not lemon-law · never invent restocking $</li>
+        <li>Free utility · ad-supported path (see README) · no paywall</li>
+      </ul>
+    </footer>
+    <canvas id="pngCanvas" width="900" height="1200" hidden aria-hidden="true"></canvas>
+  </div>
+</body>
+</html>
